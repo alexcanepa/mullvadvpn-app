@@ -6,10 +6,11 @@
 //  Copyright © 2025 Mullvad VPN AB. All rights reserved.
 //
 
-import Foundation
 import XCTest
 
 class AccountPage: Page {
+    let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+
     @discardableResult override init(_ app: XCUIApplication) {
         super.init(app)
 
@@ -17,13 +18,13 @@ class AccountPage: Page {
         waitForPageToBeShown()
     }
 
-    @discardableResult func tapRedeemVoucherButton() -> Self {
-        app.buttons[AccessibilityIdentifier.redeemVoucherButton.asString].tap()
+    @discardableResult func tapAddTimeButton() -> Self {
+        app.buttons[AccessibilityIdentifier.purchaseButton].tapWhenHittable()
         return self
     }
 
-    @discardableResult func tapAdd30DaysTimeButton() -> Self {
-        app.buttons[AccessibilityIdentifier.purchaseButton.asString].tap()
+    @discardableResult func tapRedeemVoucherButton() -> Self {
+        app.buttons[AccessibilityIdentifier.redeemVoucherButton.asString].tap()
         return self
     }
 
