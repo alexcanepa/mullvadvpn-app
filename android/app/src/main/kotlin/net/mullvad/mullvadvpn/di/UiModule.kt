@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import net.mullvad.mullvadvpn.BuildConfig
 import net.mullvad.mullvadvpn.applist.ApplicationsProvider
+import net.mullvad.mullvadvpn.compose.screen.location.LocationBottomSheetState
 import net.mullvad.mullvadvpn.compose.state.RelayListType
 import net.mullvad.mullvadvpn.constant.IS_FDROID_BUILD
 import net.mullvad.mullvadvpn.constant.IS_PLAY_BUILD
@@ -108,6 +109,7 @@ import net.mullvad.mullvadvpn.viewmodel.VoucherDialogViewModel
 import net.mullvad.mullvadvpn.viewmodel.VpnSettingsViewModel
 import net.mullvad.mullvadvpn.viewmodel.WelcomeViewModel
 import net.mullvad.mullvadvpn.viewmodel.WireguardCustomPortDialogViewModel
+import net.mullvad.mullvadvpn.viewmodel.location.LocationBottomSheetViewModel
 import net.mullvad.mullvadvpn.viewmodel.location.SearchLocationViewModel
 import net.mullvad.mullvadvpn.viewmodel.location.SelectLocationListViewModel
 import net.mullvad.mullvadvpn.viewmodel.location.SelectLocationViewModel
@@ -348,13 +350,11 @@ val uiModule = module {
             get(),
             get(),
             get(),
-            get(),
         )
     }
     viewModel { (relayListType: RelayListType) ->
         SelectLocationListViewModel(
             relayListType,
-            get(),
             get(),
             get(),
             get(),
@@ -379,6 +379,14 @@ val uiModule = module {
             apiAccessRepository = get(),
             supportEmailUseCase = get(),
             savedStateHandle = get(),
+        )
+    }
+    viewModel { (locationBottomSheetState: LocationBottomSheetState) ->
+        LocationBottomSheetViewModel(
+            locationBottomSheetState = locationBottomSheetState,
+            canBeSelectedUseCase = get(),
+            customListsRelayItemUseCase = get(),
+            selectedLocationUseCase = get(),
         )
     }
 
