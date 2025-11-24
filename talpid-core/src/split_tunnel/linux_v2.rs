@@ -214,6 +214,7 @@ fn mount_cgroup2_fs() -> Result<Cgroup2, Error> {
         nix::mount::MsFlags::empty(),
         None::<&str>,
     )
+    .context(format!("{cgroup}", cgroup = cgroup2_root.display()))
     .context("Failed to mount cgroup2 fs")?;
 
     Cgroup2::open(cgroup2_root)
