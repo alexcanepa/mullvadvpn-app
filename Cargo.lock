@@ -3478,6 +3478,7 @@ dependencies = [
 [[package]]
 name = "nftnl"
 version = "0.8.0"
+source = "git+https://github.com/mullvad/nftnl-rs.git?rev=7808dc8ae844350721fda6605eb6fd50f607ae39#7808dc8ae844350721fda6605eb6fd50f607ae39"
 dependencies = [
  "bitflags 2.9.0",
  "log",
@@ -3487,6 +3488,7 @@ dependencies = [
 [[package]]
 name = "nftnl-sys"
 version = "0.6.3"
+source = "git+https://github.com/mullvad/nftnl-rs.git?rev=7808dc8ae844350721fda6605eb6fd50f607ae39#7808dc8ae844350721fda6605eb6fd50f607ae39"
 dependencies = [
  "cfg-if",
  "libc",
