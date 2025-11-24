@@ -77,20 +77,17 @@ extension XCUIElement {
         failOnUnmetCondition: Bool = true,
         description: String? = nil
     ) -> Self {
-        let exists = XCUIElement.wait(
-            for: {
-                switch condition {
-                case .exists:
-                    self.exists
-                case .notExists:
-                    !self.exists
-                case .hittable:
-                    self.isHittable
-                }
-            },
-            timeout: timeout,
-            description: description
-        )
+        let condition: (path: KeyPath<XCUIElement, Bool>, shouldExist: Bool) =
+            switch condition {
+            case .exists:
+                (\.exists, true)
+            case .notExists:
+                (\.exists, false)
+            case .hittable:
+                (\.isHittable, true)
+            }
+
+        let exists = wait(for: condition.path, toEqual: condition.shouldExist, timeout: timeout.rawValue)
 
         if !exists && failOnUnmetCondition {
             XCTFail(description ?? "Element failed to meet condition '\(condition)'")
@@ -139,45 +136,6 @@ extension XCUIElement {
         case long = 15
         case veryLong = 20
         case extremelyLong = 180
-    }
-
-    private struct PredicatePollerDefaults {
-        static let pollInterval: TimeInterval = 0.2
-        static let maxIterations: Int = 100
-    }
-
-    // This function actively polls the hierarchy on a set interval. This speeds up the waiting process
-    // siginificantly by returning much sooner than the default system `waitForExistence()` function.
-    @discardableResult
-    private static func wait(
-        for condition: @escaping () -> Bool,
-        timeout: Timeout = .default,
-        failureMessage: String = "Condition not met",
-        description: String? = nil
-    ) -> Bool {
-        if condition() {
-            return true
-        }
-
-        let timeoutDate = Date().addingTimeInterval(timeout.rawValue)
-        let expectation = XCTestExpectation(description: description ?? "Waiting for condition to be met")
-        var iterationCount = 0
-
-        while Date() < timeoutDate {
-            iterationCount += 1
-            if iterationCount > PredicatePollerDefaults.maxIterations {
-                return false
-            }
-
-            if condition() {
-                expectation.fulfill()
-                return true
-            }
-
-            RunLoop.current.run(until: Date().addingTimeInterval(PredicatePollerDefaults.pollInterval))
-        }
-
-        return false
     }
 
     @available(*, deprecated, message: "Use wait(for:timeout:failOnUnmetCondition:description)")
