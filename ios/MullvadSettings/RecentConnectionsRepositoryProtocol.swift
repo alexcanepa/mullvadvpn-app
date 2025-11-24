@@ -1,3 +1,4 @@
+import Combine
 //
 //  RecentConnectionsRepositoryProtocol.swift
 //  MullvadVPN

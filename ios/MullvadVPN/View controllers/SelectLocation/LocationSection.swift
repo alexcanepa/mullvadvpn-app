@@ -9,24 +9,29 @@
 import Foundation
 
 enum LocationSection: String, Hashable, CaseIterable, CellIdentifierProtocol, Sendable {
+    case recents
     case customLists
     case allLocations
 
     var header: String {
         switch self {
+        case .recents:
+            NSLocalizedString("Recents", comment: "")
         case .customLists:
-            return NSLocalizedString("Custom lists", comment: "")
+            NSLocalizedString("Custom lists", comment: "")
         case .allLocations:
-            return NSLocalizedString("All locations", comment: "")
+            NSLocalizedString("All locations", comment: "")
         }
     }
 
     var footer: String {
         switch self {
+        case .recents:
+            NSLocalizedString("No recent selection history.", comment: "")
         case .customLists:
-            return NSLocalizedString("To create a custom list, tap on \"...\" ", comment: "")
+            NSLocalizedString("To create a custom list, tap on \"...\" ", comment: "")
         case .allLocations:
-            return NSLocalizedString("No matching relays found, check your filter settings.", comment: "")
+            NSLocalizedString("No matching relays found, check your filter settings.", comment: "")
         }
     }
 

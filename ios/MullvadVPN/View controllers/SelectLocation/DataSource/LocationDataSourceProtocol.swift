@@ -50,15 +50,6 @@ extension LocationDataSourceProtocol {
         }
     }
 
-    func setSelectedNode(selectedRelays: UserSelectedRelays?) {
-        nodes.forEachNode { node in
-            node.isSelected = false
-        }
-        guard let selectedRelays else { return }
-        let selectedNode = node(by: selectedRelays)
-        selectedNode?.isSelected = true
-    }
-
     func expandSelection() {
         nodes.forEachNode { node in
             if node.isSelected {
@@ -100,37 +91,46 @@ extension LocationDataSourceProtocol {
         return node.isHiddenFromSearch
     }
 
-    func node(by selectedRelays: UserSelectedRelays) -> LocationNode? {
-        let rootNode = RootLocationNode(children: nodes)
+    //    func node(by selectedRelays: UserSelectedRelays) -> LocationNode? {
+    //        let rootNode = RootLocationNode(children: nodes)
+    //
+//            guard let location = selectedRelays.locations.first else {
+//                return nil
+//            }
+//            let descendantNodeFor: ([String]) -> LocationNode? = { codes in
+//                switch location {
+//                case let .country(countryCode):
+//                    rootNode.descendantNodeFor(codes: codes + [countryCode])
+//                case let .city(countryCode, cityCode):
+//                    rootNode.descendantNodeFor(codes: codes + [countryCode, cityCode])
+//                case let .hostname(_, _, hostCode):
+//                    rootNode.descendantNodeFor(codes: codes + [hostCode])
+//                }
+//            }
+    //
+    //        if let customListSelection = selectedRelays.customListSelection {
+    //            let selectedCustomListNode = nodes.first(where: {
+    //                $0.asCustomListNode?.customList.id == customListSelection.listId
+    //            })
+    //
+    //            guard let selectedCustomListNode else { return nil }
+    //
+    //            if customListSelection.isList {
+    //                return selectedCustomListNode
+    //            }
+    //
+    //            return descendantNodeFor([selectedCustomListNode.code])
+    //        } else {
+    //            return descendantNodeFor([])
+    //        }
+    //    }
 
-        guard let location = selectedRelays.locations.first else {
-            return nil
+    func setSelectedNode(selectedRelays: UserSelectedRelays?) {
+        nodes.forEachNode { node in
+            node.isSelected = false
         }
-        let descendantNodeFor: ([String]) -> LocationNode? = { codes in
-            switch location {
-            case let .country(countryCode):
-                rootNode.descendantNodeFor(codes: codes + [countryCode])
-            case let .city(countryCode, cityCode):
-                rootNode.descendantNodeFor(codes: codes + [countryCode, cityCode])
-            case let .hostname(_, _, hostCode):
-                rootNode.descendantNodeFor(codes: codes + [hostCode])
-            }
-        }
-
-        if let customListSelection = selectedRelays.customListSelection {
-            let selectedCustomListNode = nodes.first(where: {
-                $0.asCustomListNode?.customList.id == customListSelection.listId
-            })
-
-            guard let selectedCustomListNode else { return nil }
-
-            if customListSelection.isList {
-                return selectedCustomListNode
-            }
-
-            return descendantNodeFor([selectedCustomListNode.code])
-        } else {
-            return descendantNodeFor([])
-        }
+        guard let selectedRelays else { return }
+        let selectedNode = node(by: selectedRelays)
+        selectedNode?.isSelected = true
     }
 }
